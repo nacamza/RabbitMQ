@@ -1,60 +1,33 @@
-'use strict'
+var amqp = require('amqplib/callback_api');
 
-const amqp = require('amqplib')
-const queue = process.env.QUEUE || 'hello'
-
-const messagesAmount = 6
-const wait = 400
-
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms)
-    })
-}
-
-async function sleepLoop(number, cb) {
-    while (number--) {
-        await sleep(wait)
-
-        cb()
+amqp.connect('amqp://192.168.44.37', function(error0, connection) {
+    if (error0) {
+        throw error0;
     }
-}
-
-async function exitAfterSend() {
-    await sleep(messagesAmount * wait * 1.2)
-
-    process.exit(0)
-}
-
-async function publisher() {
-    const connection = await amqp.connect('amqp://192.168.8.238/')
-    const channel = await connection.createChannel()
-
-    await channel.assertQueue(queue)
-
-    sleepLoop(messagesAmount, async () => {
-        const message = {
-            id: Math.random().toString(32).slice(2, 6),
-            text: 'Hello world!'
+    connection.createChannel(function(error1, channel) {
+        if (error1) {
+            throw error1;
         }
 
-        const sent = await channel.sendToQueue(
-            queue,
-            Buffer.from(JSON.stringify(message)),
-            {
-                // persistent: true
-            }
-        )
+        var queue = 'task_queue';
+        var msg = process.argv.slice(2).join(' ') || "Hello World!";
 
-        sent
-            ? console.log(`Sent message to "${queue}" queue`, message)
-            : console.log(`Fails sending message to "${queue}" queue`, message)
-    })
-}
+        channel.assertQueue(queue, {
+            // Nos asegurarnos de que la cola sobreviva al reinicio del nodo RabbitMQ
+            // Este parámetro no se pude cambiar una vez creada la cola 
+            durable: true
+        });
+    
+        channel.sendToQueue(queue, Buffer.from(msg), {
+            //Ahora debemos marcar nuestros mensajes como persistentes
+            persistent: true
+        });
 
-publisher().catch((error) => {
-    console.error(error)
-    process.exit(1)
-})
-
-exitAfterSend()
+        console.log(" [x] Sent %s", msg);
+        console.log(" Queue %s", queue);
+    });
+    setTimeout(function() {
+        connection.close();
+        process.exit(0);
+    }, 500);
+});

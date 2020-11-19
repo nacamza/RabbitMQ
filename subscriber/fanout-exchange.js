@@ -1,43 +1,50 @@
-'use strict'
 
-const amqp = require('amqplib')
-const queue = process.env.QUEUE || 'hello'
-const exchangeName = process.env.EXCHANGE || 'my-fanout'
+// Nombramos el exchange
+const exchangeName = 'logs'
+// Definimos el comportamiento del Exchange (fanout = broadcasts)
 const exchangeType = 'fanout'
+// Es la ruta del mensaje 
+const bindingkey = ''
 
-console.log({
-    queue,
-    exchangeName
-})
 
-function intensiveOperation() {
-    let i = 1e3
-    while (i--) {}
-}
+var amqp = require('amqplib/callback_api');
 
-async function subscriber() {
-    const connection = await amqp.connect('amqp://localhost')
-    const channel = await connection.createChannel()
+// Me conecto con la Rabbit
+amqp.connect('amqp://192.168.44.37', function(error0, connection) {
+    if (error0) {
+        throw error0;
+    }
+    // Creo un canal
+    connection.createChannel(function(error1, channel) {
+        if (error1) {
+            throw error1;
+        }
+        // Indico a que Exchange se va a conectar la cola
+        channel.assertExchange(exchangeName, exchangeType, {
+            durable: false
+        });       
+        
+        // Creo una cola
+        channel.assertQueue('', {
+            exclusive: true
+        }, function(error2, q) {
+            if (error2) {
+                throw error2;
+            }
+            console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
+        
+            //Conecto la cola con el Exchange
+            channel.bindQueue(q.queue, exchangeName, bindingkey);
 
-    await channel.assertQueue(queue)
-
-    await channel.assertExchange(exchangeName, exchangeType)
-
-    await channel.bindQueue(queue, exchangeName)
-
-    channel.consume(queue, (message) => {
-        const content = JSON.parse(message.content.toString())
-
-        intensiveOperation()
-
-        console.log(`Received message from "${queue}" queue`)
-        console.log(content)
-
-        channel.ack(message)
-    })
-}
-
-subscriber().catch((error) => {
-    console.error(error)
-    process.exit(1)
-})
+            //Leo los datos
+            channel.consume(q.queue, function(msg) {
+                if (msg.content) {
+                    console.log(" [x] %s", msg.content.toString());
+                }
+            }, {
+                // Nos aseguramos que el mensaje sea recibido con un ACK 
+                noAck: true
+            });
+        });
+    });
+});
