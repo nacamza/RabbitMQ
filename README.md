@@ -4,6 +4,8 @@ Primero iniciamos la rqabbit mediante el siguiente comando
 docker-compose up -d
 ````
 [Documentación](https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html)
+
+[Video explicativo](https://www.youtube.com/watch?v=8083HvKEwZY&t=761s)
 ### Primer ejemplo 
 Enviar mensajes directo a las colas:
 - Publisher: queues.js
