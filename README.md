@@ -1,10 +1,8 @@
-# RabbitMQ
+# [RabbitMQ](https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html)
 Vamos a instalar RabbitMQ con docker-compose mediante el siguiente comando
 ````
 docker-compose up -d
 ````
-[Documentación](https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html)
-
 # Proyecto 
 El proyecto hay dos carpetas en donde:
 - Publisher: Se encuentra el código que genera mensaje
