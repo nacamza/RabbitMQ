@@ -5,8 +5,6 @@ docker-compose up -d
 ````
 [Documentación](https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html)
 
-[Video explicativo de funcionamiento](https://www.youtube.com/watch?v=8083HvKEwZY&t=761s)
-
 # Proyecto 
 El proyecto hay dos carpetas en donde:
 - Publisher: Se encuentra el código que genera mensaje
