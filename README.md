@@ -22,7 +22,7 @@ Tipos de Exchanges:
 
 ![](https://www.cloudamqp.com/img/blog/exchanges-topic-fanout-direct.png)
 
-## [Comfiguracion avanzada](https://www.rabbitmq.com/queues.html#optional-arguments)
+## [Configuración  avanzada](https://www.rabbitmq.com/queues.html#optional-arguments)
 ### [Message TTL](https://www.rabbitmq.com/ttl.html#per-queue-message-ttl)
 Cuánto tiempo puede vivir un mensaje publicado en una cola antes de que se descarte (milisegundos). (Establece el argumento "x-message-ttl")
 ````
