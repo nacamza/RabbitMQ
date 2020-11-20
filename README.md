@@ -1,5 +1,5 @@
 # RabbitMQ
-Bamos a instalar RabbitMQ con docker-compose mediante el siguiente comando
+Vamos a instalar RabbitMQ con docker-compose mediante el siguiente comando
 ````
 docker-compose up -d
 ````
