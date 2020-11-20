@@ -1,5 +1,5 @@
 # RabbitMQ
-Primero iniciamos la RabbitMQ mediante el siguiente comando
+Bamos a instalar RabbitMQ con docker-compose mediante el siguiente comando
 ````
 docker-compose up -d
 ````
@@ -7,9 +7,13 @@ docker-compose up -d
 
 [Video explicativo de funcionamiento](https://www.youtube.com/watch?v=8083HvKEwZY&t=761s)
 
-### Primer ejemplo 
-Enviar mensajes directo a las colas:
-- Publisher: queues.js
+# Proyecto 
+El el proyecto hay dos carpetas en donde:
+- Publisher: Se uncuentra el codigo que genera mensajer
+- Subscriber: Se encuentra el codigo que consume mensaje
+## Ejemplos
+Dentro de las carpetas Publisher y Subscriber vamos a encontrar cuatro archivos que implementan los siguientes ejemplos
+- queues.js: Implementa un ejemplo sin configurar el exchange (por defecto utiliza el directo)
 - Subscriber: queues.js
 ### Ejemplos con exchange
 Tipos de Exchanges:
