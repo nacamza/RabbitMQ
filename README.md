@@ -79,3 +79,8 @@ rabbitmqctl set_policy Lazy "^lazy-queue$" '{"queue-mode":"lazy"}' --apply-to qu
 ````
 ### [Master locator]( https://www.rabbitmq.com/ha.html#queue-master-location)
 Cada cola en RabbitMQ tiene una réplica principal. Ese nodo se llama maestro de cola . Todas las operaciones de la cola pasan primero por el maestro y luego se replican en espejos. Esto es necesario para garantizar el orden FIFO de los mensajes.
+
+### Dar permisos a un usuario
+For example, this command instructs the RabbitMQ broker to grant the user named "janeway" access to the virtual host called "my-vhost", with configure permissions on all resources whose names starts with "janeway-", and write and read permissions on all resources:
+
+rabbitmqctl set_permissions -p my-vhost janeway "^janeway-.*" ".*" ".*"
